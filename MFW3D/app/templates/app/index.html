@@ -1,0 +1,32 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+{% load staticfiles %}
+
+<div class="jumbotron">
+    <h1>MFW3D</h1>
+    <p class="lead"><img src="{% static 'app/img/logo.png' %}" />MFW3D 是一个框架系统，包含了服务器，数据库，三维引擎等模块.</p>
+    <p><a href="https://github.com/captainl1993/MFrameWork" class="btn btn-primary btn-large">在Github上查看源码 &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>编译MFW3D</h2>
+        <p>
+            MFW3D坚持开放，实用，跨平台等原则，为了使您能快速的参与到MFW3D的开发中来，我将windows系统所需的以来上传到了百度网盘
+        </p>
+        <p><a class="btn btn-default" href="http://pan.baidu.com/s/1qYI6HwK">依赖地址，密码：ra9s &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>linux系统支持</h2>
+        <p>MFW3D是跨平台的，除了3维引擎部分还未测试，服务器部分，数据库操作部分完全支持linux系统，在后续的开发中，我将上传linux相关的配置.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>平台的发展方向</h2>
+        <p>MFW3D的最初系统是我做游戏服务器的总结，使用过libevent，udt，enet，以及其他网络库后我发现libuv是最有亲和力，稳定性的网络库，因此选择了libuv作为系统的底层网络。</p>
+        <p>protobuffer 是google公司开源的序列化工具，也是高效可靠的序列化工具，曾经用过flatbuffer，Json等工具，最后结合性能和可维护性，选择了protobuffer。</p>
+        <p><a class="btn btn-default" href="https://github.com/captainl1993/MFrameWork/tree/master/MFW/MFW_Proto">协议文件 &raquo;</a></p>
+    </div>
+</div>
+
+{% endblock %}

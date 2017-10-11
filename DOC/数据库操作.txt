@@ -1,0 +1,99 @@
+有了基础概念，  就开始一个Demo吧！    打开文件  。
+输入代码：
+from django.db import models
+# Create your models here.
+ 
+class Artist(models.Model):
+    name = models.CharField(max_length = 50)
+    year_formed =models.PositiveIntegerField();
+ 
+class Album(models.Model):
+    name = models.CharField(max_length = 50)
+ 
+     关于数据表的介绍：
+每个数据表都应该有一个key
+这个key通常是id, 自动生成的数字
+Django自动处理这些
+ 
+ 
+创建表之间的关系。
+         如果 Artist 是 有 Album的（艺术相册/专辑），  Django 使用 models.ForeignKey 创建关系！
+class Album(models.Model):
+    name = models.CharField(max_length = 50)
+    artist = models.ForeignKey(Artist)
+ 
+关于 视图上名字的显示问题：
+ Django自动显示label属性到视图上，  "_"符号被换成了“ ”空格。
+ 默认情况下显示的字段名称是依据 models.py 中的字段名来显示的。
+如果想要定制 label：
+verbose_name 可以让你定制名字；
+必须以小写字母开始
+ 
+下面要做的就是自定义字段在后台的显示名称（比如显示为中文）。
+        对于普通字段：
+name = models.CharField(u'软件名称',max_length=200)
+       对于 OneToOneField, ForeignKey 及 ManyToManyField ：
+foo= models.OneToOneField(Foo, verbose_name=u'foobar')
+software = models.ForeignKey(SoftWare,verbose_name=u'软件名称')
+author = models.ManyToManyField(Author,verbose_name=u'作者')
+ 
+Django的数据库 支持  SQLite \ MySQL \ SQL .    默认为开发者提供的是SQLite 
+可以在  setting.py  中指定并设置  。
+ 
+那么如何创建 database   三种命令方式：
+makemigrations            创建一个新的 migrate
+python manage.py makemigrations --name initial app
+sqlmigrate           显示 SQL状态
+migrate             更新数据库到一个指定的 migrate包中
+ 
+那么怎么启动命令行呢？
+项目上  右键 选择 - 》  Open Command Prompt Here…    然后 出入命令：
+再执行命令  ：  python manage.py showmigrations app
+app
+ [ ] 0001_initial
+ 
+再执行命令  ：  python manage.py sqlmigrate  app  0001_initial
+ 
+再执行命令  ：  python manage.py migrate  
+ 
+1、】创建和更新数据
+创建并保存对象到数据库的方式“
+newArtist = Artist(name ='Artist Name', year_formed = 2015);
+newArtist.save();
+只要继承自Model类  就有 save() 方法；
+ 
+更新对象的数据， 也很简单 Python的OEM会自动弄， 只需要使用save() 方法即可！
+newArtist.name = 'Updated Name';
+newArtist.save();
+可以才命令行中执行测试：
+通过 Django的ORM 获取数据！
+ objects 集合， 每个类会从Model类继承 objects 
+# 使用 all() 检索所有对象
+allArtists =Artist.objects.all();
+for artist in allArtists:
+    print(artist.name);
+   
+# 使用Get(ID)检索特定ID的对象
+allArtists =Artist.objects.all();
+for artist in allArtists:
+    print(artist.name);
+ 
+Django 提供了 两个主要的方法：
+get       只返回一个对象，    如果你返回0个或者超过1个，会报错
+filter      返回多个对象，     允许更多复杂的查询
+ 
+例如， 你想通过名字查找：
+artist = Artist.objects.get(name= 'Artist Name');
+ 
+例如， 你只知道名字的一部分（模糊查询？）
+artist =Artist.objects.filter(name__startswith = 'Great');
+ 
+get 总是期待精确匹配
+artist = Artist.objects.get(name= 'Artist Name');
+上面的查询是与以下相同
+artist =Artist.objects.get(name__exact = 'Artist Name');
+ 
+从 artist 中加载所有的 albums 怎么办？？？
+Django 允许使用对象链（使用ForeignKey定义的关系）的方式 查询
+创建要给筛选，  使用 object_property 
+albums = Album.objects.filter(artist__name= 'Artist Name');
